@@ -31,7 +31,7 @@ class MovieRepository extends BaseRepository
      */
     public function findByTitle(string $title)
     {
-        return $this->model->where('title', 'like', '%' . $title . '%')->get()->first();
+        return $this->model->where('title', 'like', '%' . $title . '%')->firstOrFail();
     }
 
     /**
@@ -41,13 +41,13 @@ class MovieRepository extends BaseRepository
      */
     public function create(array $attributes): Model
     {
-        $attributes = $this->proccessImage($attributes);
+        $attributes = $this->processImage($attributes);
 
-        $model = $this->model->create($attributes);
+        $record = $this->model->create($attributes);
 
-        $attributes['genres'] ? $model->attachGenres($attributes['genres']) : null;
+        $attributes['genres'] ? $record->attachGenres($attributes['genres']) : null;
 
-        return $model;
+        return $record;
     }
 
     /**
@@ -59,7 +59,9 @@ class MovieRepository extends BaseRepository
     {
         $record = $this->find($id);
 
-        $attributes = $this->proccessImage($attributes);
+        $attributes = $this->processImage($attributes);
+
+        $attributes['genres'] ? $record->attachGenres($attributes['genres']) : null;
 
         return $record->update($attributes);
     }
@@ -68,7 +70,7 @@ class MovieRepository extends BaseRepository
      * @param array $attributes
      * @return array
      */
-    private function proccessImage(array $attributes)
+    private function processImage(array $attributes)
     {
         if (isset($attributes['image']) && $attributes['image']) {
             $image = $this->imageRepository->upload($attributes['image']);
