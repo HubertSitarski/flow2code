@@ -18,10 +18,11 @@ class MovieUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'title' => 'string',
+            'title' => 'required|string',
+            'description' => 'required',
             'image' => 'image',
-            'genres' => 'array',
-            'country' => 'string'
+            'genres' => 'required|array',
+            'country' => 'required|string'
         ];
     }
 }
