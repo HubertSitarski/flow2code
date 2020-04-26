@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Movie extends Model
 {
-    protected $fillable = ['title', 'description', 'image_id', 'country'];
+    protected $fillable = ['title', 'description', 'country', 'image_id'];
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
@@ -26,5 +26,19 @@ class Movie extends Model
     public function image()
     {
         return $this->belongsTo(Image::class);
+    }
+
+    /**
+     * @param array $genres
+     */
+    public function attachGenres(array $genres)
+    {
+        $attachable = [];
+
+        foreach ($genres as $genre) {
+            $attachable[] = $genre['id'];
+        }
+
+        $this->genres()->attach($attachable);
     }
 }
