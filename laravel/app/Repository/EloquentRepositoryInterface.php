@@ -25,10 +25,10 @@ interface EloquentRepositoryInterface
     public function update(array $attributes, int $id): bool;
 
     /**
-     * @param $id
-     * @return int int
+     * @param int $id
+     * @return int
      */
-    public function delete(int $id);
+    public function delete(int $id): int;
 
     /**
      * @param int $id
