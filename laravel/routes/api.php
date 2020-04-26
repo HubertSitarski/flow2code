@@ -22,5 +22,7 @@ Route::group([
 ], function() {
     Route::get('/', 'MovieController@index');
     Route::get('{title}', 'MovieController@show');
+    Route::post('/', 'MovieController@create');
+    Route::put('{movie}', 'MovieController@update');
     Route::delete('{movie}', 'MovieController@delete');
 });

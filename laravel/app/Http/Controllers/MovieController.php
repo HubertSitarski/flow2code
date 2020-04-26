@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\MovieCreateRequest;
+use App\Http\Requests\MovieUpdateRequest;
 use App\Http\Resources\MovieResource;
 use App\Movie;
 use App\Repository\Eloquent\MovieRepository;
@@ -39,6 +41,29 @@ class MovieController extends Controller
     public function show(string $title)
     {
         return new MovieResource($this->movieRepository->findByTitle($title));
+    }
+
+    /**
+     * @param MovieCreateRequest $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function create(MovieCreateRequest $request)
+    {
+        $movie = $this->movieRepository->create($request->all());
+
+        return response()->json($movie, Response::HTTP_CREATED);
+    }
+
+    /**
+     * @param MovieUpdateRequest $request
+     * @param Movie $movie
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function update(MovieUpdateRequest $request, Movie $movie)
+    {
+        $this->movieRepository->update($request->all(), $movie->id);
+
+        return response()->json($this->movieRepository->find($movie->id), Response::HTTP_OK);
     }
 
     /**
