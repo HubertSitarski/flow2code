@@ -38,7 +38,11 @@ class Movie extends Model
         $attachable = [];
 
         foreach ($genres as $genre) {
-            $attachable[] = $genre['id'];
+            if (isset($genre['id'])) {
+                $attachable[] = $genre['id'];
+            } elseif (is_numeric($genre)) {
+                $attachable[] = $genre;
+            }
         }
 
         $this->genres()->attach($attachable);
