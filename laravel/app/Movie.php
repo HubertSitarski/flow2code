@@ -33,6 +33,8 @@ class Movie extends Model
      */
     public function attachGenres(array $genres)
     {
+        $this->genres()->detach();
+
         $attachable = [];
 
         foreach ($genres as $genre) {
