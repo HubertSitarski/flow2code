@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Resources\MovieResource;
+use App\Movie;
 use App\Repository\Eloquent\MovieRepository;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class MovieController
@@ -37,5 +39,17 @@ class MovieController extends Controller
     public function show(string $title)
     {
         return new MovieResource($this->movieRepository->findByTitle($title));
+    }
+
+    /**
+     * @param Movie $movie
+     * @return \Illuminate\Http\JsonResponse
+     * @throws \Exception
+     */
+    public function delete(Movie $movie)
+    {
+        $this->movieRepository->delete($movie->id);
+
+        return response()->json(null, Response::HTTP_NO_CONTENT);
     }
 }
